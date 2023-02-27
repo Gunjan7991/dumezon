@@ -51,7 +51,7 @@ public class CustomerService {
         return base_response;
     }
 
-    protected Customer requestToCustomer(CustomerRequest request) { //this method is used to convert Request object to Customer Object
+    private Customer requestToCustomer(CustomerRequest request) { //this method is used to convert Request object to Customer Object
         Customer customer = new Customer();
         customer.setCustomerName(request.getName());
         customer.setCustomerEmail(request.getEmail());
@@ -61,7 +61,7 @@ public class CustomerService {
         return customer;
     }
 
-    protected CustomerResponse customerToResponse(Customer customer) {// this method is used to convert Customer Object to CustomerResponse object
+    private CustomerResponse customerToResponse(Customer customer) {// this method is used to convert Customer Object to CustomerResponse object
         CustomerResponse response = new CustomerResponse();
         response.setId(customer.getCustomerId());
         response.setName(customer.getCustomerName());
@@ -71,17 +71,24 @@ public class CustomerService {
         return response;
     }
 
-    protected boolean checkEmailValidity(String email) {
+    private boolean checkEmailValidity(String email) {
         String pattern = "[a-zA-Z0-9._]*@[a-zA-Z0-9.]*\\.[a-zA-Z]*"; //regular expression for email validation
         return Pattern.matches(pattern, email);
     }
 
-    protected boolean checkPasswordValidity(String password) {
+    private boolean checkPasswordValidity(String password) {
         boolean valid = false;
+        String regex = "^(?=.*[0-9])"
+                + "(?=.*[a-z])(?=.*[A-Z])"
+                + "(?=.*[@#$%^&+=!])"
+                + "(?=\\S+$).{8,20}$";
+        Pattern p= Pattern.compile(regex);
         if (password.length() > 7) {
-            if (Pattern.matches("^(?=.*[A-Z].*[A-Z])(?=.*[!@#$&*])(?=.*[0-9].*[0-9])(?=.*[a-z].*[a-z].*[a-z]).{8}$", password)) { // regular expression to check password validity
+
+            if (p.matcher(password).matches()) { // regular expression to check password validity
                 valid = true;
             }
+
         }
         return valid;
     }
