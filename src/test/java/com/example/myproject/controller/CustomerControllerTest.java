@@ -34,7 +34,7 @@ class CustomerControllerTest {
     }
 
     private CustomerRequest getBadRequest() {
-        return new CustomerRequest("Jhon Doe", "jhon.doe@gmail.com", "Password1!", "Password1", "123 Home Address, city, ST, 12200", "3222331919");
+        return new CustomerRequest("Jhon Doe", "jhon.doe@gmail.com", "Password", "Password", "123 Home Address, city, ST, 12200", "3222331919");
 
     }
 
@@ -83,7 +83,7 @@ class CustomerControllerTest {
         Mockito.when(service.addCustomer(Mockito.any())).thenReturn(baseResponse.getBody());
         ResponseEntity<BaseCustomerResponse> response = controller.addCustomer(getBadRequest());
         assertNull(response.getBody().getResponse().getName());
-        assertEquals(response.getStatusCode(), baseResponse.getStatusCode());
+        assertEquals(baseResponse.getStatusCode(), response.getStatusCode());
 
     }
 

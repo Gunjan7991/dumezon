@@ -20,8 +20,12 @@ public class CustomerController {
     @PostMapping("/customer/create")
     public ResponseEntity<BaseCustomerResponse> addCustomer(@RequestBody CustomerRequest request) {
         BaseCustomerResponse response = service.addCustomer(request);
-        if (response.getResponse().getName() != null) {
-            return new ResponseEntity<>(response, HttpStatus.CREATED);
+        if(response != null) {
+            if (response.getResponse() != null) {
+                if (response.getResponse().getName() != null) {
+                    return new ResponseEntity<>(response, HttpStatus.CREATED);
+                }
+            }
         }
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
