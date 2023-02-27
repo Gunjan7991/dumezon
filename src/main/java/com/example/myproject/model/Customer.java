@@ -20,7 +20,7 @@ public class Customer {
     private String customerName;
     @Column(nullable = false)
     private String customerAddress;
-    @Column(nullable = false, length = 45)
+    @Column(nullable = false, length = 45, unique = true) // Unique: make sure the field remains unique in the table. repeated entry is not permitted.
     private String customerEmail;
     @Column(nullable = false, length = 60)
     private String customerPassword;
