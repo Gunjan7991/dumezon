@@ -4,6 +4,11 @@ import com.example.myproject.dao.CustomerDao;
 import com.example.myproject.model.Customer;
 import com.example.myproject.request.CustomerRequest;
 import com.example.myproject.response.BaseCustomerResponse;
+import com.sun.source.tree.AssertTree;
+import org.junit.Before;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.annotation.Transactional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -11,17 +16,29 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.mock;
+@Transactional
+@SpringBootTest
 class CustomerServiceTest {
 
     @InjectMocks
     CustomerService service;
 
+    @Autowired
+    CustomerService cs;
+
     @Mock
     CustomerDao dao;
+
+    @Before
+    public void run(){
+        cs.addCustomer(getRequest());
+    }
 
     @BeforeEach
     public void setup() {
@@ -31,6 +48,7 @@ class CustomerServiceTest {
             System.out.println("Exception occurred when Mocking");
         }
     }
+
 
 
 
@@ -46,6 +64,9 @@ class CustomerServiceTest {
 
     public Customer getCustomer() {
         return new Customer(1, "Jhon Doe", "123 Home Address, city, ST, 12200", "jhon.doe@gmail.com", "Password1!", "3222331919");
+    }
+    public Customer getBadCustomer() {
+        return new Customer();
     }
 
     public CustomerRequest getRequest() {
@@ -77,8 +98,9 @@ class CustomerServiceTest {
     void addCustomerSuccessTest() {
         Mockito.when(dao.save(Mockito.any())).thenReturn(getCustomer());
         BaseCustomerResponse response = service.addCustomer(getRequest());
+        System.out.println(response);
         assertNotNull(response);
-        assertEquals(response.getResponse().getName(), getCustomer().getCustomerName(), "Checking Customer names");
+        assertEquals(getCustomer().getCustomerName(), response.getResponse().getName());
     }
 
     @Test
@@ -107,9 +129,60 @@ class CustomerServiceTest {
         //Exception
         response = service.addCustomer(null);
         assertNull(response.getResponse());
-        assertNull(response.getMessage());
+        assertNotNull(response.getMessage());
 
 
     }
 
+    @Transactional
+    @Test
+    void findByIDTest(){
+        run();
+        Mockito.when(dao.findCustomerByCustomerId(Mockito.any())).thenReturn(getCustomer());
+        BaseCustomerResponse response = cs.findById(2);
+        System.out.println(cs.getAllCustomer());
+        assertNotNull(response);
+        assertEquals(getCustomer().getCustomerName(), response.getResponse().getName());
+    }
+
+    @Transactional
+    @Test
+    void findByIDExceptionTest(){
+        Mockito.when(dao.findCustomerByCustomerId(Mockito.any())).thenReturn(getBadCustomer());
+        BaseCustomerResponse response = cs.findById(2);
+        assertNull(response.getResponse().getId());
+        assertEquals(getBadCustomer().getCustomerName(),response.getResponse().getName());
+    }
+
+    @Transactional
+    @Test
+    void getAllCustomerTest() {
+        run();
+        List<Customer> customerList = new ArrayList<>();
+        customerList.add(getCustomer());
+        Mockito.when(dao.findAll()).thenReturn(customerList);
+        List<Customer> cList = cs.getAllCustomer();
+        System.out.println(cList);
+        assertFalse(cList.isEmpty());
+        assertEquals(customerList.get(0).getCustomerId(), cList.get(0).getCustomerId());
+    }
+
+    @Test
+    void updateCustomerTest() {
+
+    }
+
+    @Test
+    void updateCustomerExceptionTest() {
+    }
+
+    @Transactional
+    @Test
+    void getAllCustomerExceptionTest() {
+        List<Customer> customerList = new ArrayList<>();
+        Mockito.when(dao.findAll()).thenReturn(customerList);
+        List<Customer> cList = cs.getAllCustomer();
+        assertTrue(cList.isEmpty());
+        assertNotNull(cList);
+    }
 }
