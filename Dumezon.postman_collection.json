@@ -1,0 +1,103 @@
+{
+	"info": {
+		"_postman_id": "91a9412f-2bd0-4569-b019-95b519a5f3ae",
+		"name": "Dumezon",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Customer",
+			"item": [
+				{
+					"name": "get all",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}{{path}}/customer",
+							"host": [
+								"{{url}}{{path}}"
+							],
+							"path": [
+								"customer"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create customer tester",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\":\"Jhon Doe\",\n    \"email\":\"jhon.doe@gmail.com\",\n    \"password\":\"Hello122!\",\n    \"re_password\":\"Hello122!\",\n    \"address\":\"123 Home Address, city, ST, 12200\",\n    \"phone\":\"1231231231\"\n\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}{{path}}/customer/create",
+							"host": [
+								"{{url}}{{path}}"
+							],
+							"path": [
+								"customer",
+								"create"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get by id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}{{path}}/customer/1",
+							"host": [
+								"{{url}}{{path}}"
+							],
+							"path": [
+								"customer",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create customer",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\":\"Gunjan Basnet\",\n    \"email\":\"gunjan1@email.com\",\n    \"password\":\"Hello122!\",\n    \"re_password\":\"Hello122!\",\n    \"address\":\"123 Home\",\n    \"phone\":\"1231231231\"\n\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}{{path}}/customer/create",
+							"host": [
+								"{{url}}{{path}}"
+							],
+							"path": [
+								"customer",
+								"create"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
